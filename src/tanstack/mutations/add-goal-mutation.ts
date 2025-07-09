@@ -1,16 +1,14 @@
-import { getResponseFromGenAi } from "@/services/genai";
 import { useAuthStore } from "@/stores/use-auth-store";
 import { useMutation } from "@tanstack/react-query";
 import { useGetUserQuery } from "../queries/get-user";
+import { GoalType } from "@/types/goal.type";
+import { addGoal } from "@/services/goal";
 
-export const useRequestMutation = () => {
+export const useAddGoalMutation = () => {
   const { userId } = useAuthStore();
   const { data } = useGetUserQuery(userId);
 
-
-
   return useMutation({
-    mutationFn: (request: string) =>
-      getResponseFromGenAi({ request, nickname:data.nickname }),
+    mutationFn: (goal: GoalType) => addGoal({ goal, userId: data.uid }),
   });
 };

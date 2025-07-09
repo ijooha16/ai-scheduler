@@ -2,7 +2,7 @@
 
 import Chat from "@/components/home/chat";
 import PageContainer from "@/components/layout/page-container";
-import { useRequestMutation } from "@/tanstack/mutations/useRequestMutation";
+import { useRequestGoalMutation } from "@/tanstack/mutations/request-goals-mutation";
 import styled from "@emotion/styled";
 import { FormEvent, Fragment, useEffect, useState } from "react";
 import { useAuthStore } from "@/stores/use-auth-store";
@@ -14,7 +14,7 @@ import { ChatType } from "@/types/chat.type";
 const Home = () => {
   const [chats, setChats] = useState<ChatType[]>([]);
   const [inputValue, setInputValue] = useState("");
-  const { mutate: sendRequest, data, isPending } = useRequestMutation();
+  const { mutate: sendRequest, data, isPending } = useRequestGoalMutation();
   const schedule = data ? JSON.parse(data) : null;
 
   useEffect(() => {

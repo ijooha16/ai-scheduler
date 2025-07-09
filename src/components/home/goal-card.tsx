@@ -2,6 +2,7 @@ import { GoalType } from "@/types/goal.type";
 import BoxContainer from "../layout/box-container";
 import Theme from "../common/theme";
 import Button from "../common/button";
+import { useAddGoalMutation } from "@/tanstack/mutations/add-goal-mutation";
 
 const ScheduleCard = ({
   single = false,
@@ -12,6 +13,8 @@ const ScheduleCard = ({
   data: GoalType;
   onClickHandler?: () => void;
 }) => {
+  const { mutate: addGoal } = useAddGoalMutation();
+
   return (
     <BoxContainer className="gap-4 bg-white">
       <div className="flex w-full items-center justify-between">
@@ -31,7 +34,7 @@ const ScheduleCard = ({
         </div>
       ))}
       {single ? (
-        <Button>추가하기</Button>
+        <Button onClick={() => addGoal(data)}>추가하기</Button>
       ) : (
         onClickHandler && (
           <Button onClick={() => onClickHandler()}>선택하기</Button>
