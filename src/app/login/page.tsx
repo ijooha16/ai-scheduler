@@ -1,8 +1,9 @@
+import PageContainer from "@/components/layout/page-container";
 import { login, signInWithKakao, signup } from "../../services/auth";
 
 export default function Login() {
   return (
-    <div>
+    <PageContainer>
       <form>
         <label htmlFor="email">Email:</label>
         <input id="email" name="email" type="email" required />
@@ -12,6 +13,6 @@ export default function Login() {
         <button formAction={signup}>Sign up</button>
       </form>
       <button onClick={signInWithKakao}>kakao</button>
-    </div>
+    </PageContainer>
   );
 }

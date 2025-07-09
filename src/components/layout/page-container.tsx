@@ -2,8 +2,8 @@ import { ContainerType } from "@/types/layout.type";
 
 const PageContainer = ({ children, className, style }: ContainerType) => {
   return (
-    <main style={style} className={`${className} flex-1 px-8 py-40`}>
-      <div className="mx-auto flex max-w-5xl flex-col items-center gap-24">
+    <main style={style} className={`${className} px-8`}>
+      <div className="mx-auto flex h-screen max-w-5xl flex-col items-center gap-12 pt-40 pb-12">
         {children}
       </div>
     </main>

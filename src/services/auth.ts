@@ -23,8 +23,6 @@ export async function login(formData: FormData) {
   }
 
   if (user.user) {
-    console.log(user)
-    useAuthStore.getState().login(user.user.id);
     redirect("/");
   }
 }
@@ -51,7 +49,6 @@ export async function signup(formData: FormData) {
   }
 
   if (user.user) {
-    useAuthStore.getState().login(user.user.id);
     redirect("/");
   }
 }
@@ -86,7 +83,6 @@ export async function signOut() {
     console.error("Error Signing out", error.message);
   }
 
-  useAuthStore.getState().logout();
   redirect("/");
 }
 

@@ -1,0 +1,22 @@
+export type RequestType = {
+  comment: string;
+  plans: ScheduleType[];
+};
+
+export type ScheduleType = {
+  title: string;
+  theme: ThemeType;
+  todos: string[][];
+};
+
+export enum ThemeEnum {
+  STUDY = '공부',
+  EXERCISE = '운동',
+  HEALTH = '건강',
+  FINANCE = '재무',
+  RELATIONSHIP = '관계',
+  HOBBY = '취미',
+  ETC = '기타',
+}
+
+export type ThemeType = keyof typeof ThemeEnum
