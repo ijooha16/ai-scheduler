@@ -1,27 +1,27 @@
-"use client";
+import { Dispatch, SetStateAction } from "react";
+import Button from "../common/Button";
+import BoxContainer from "../layout/box-container";
 
-import { useRequestMutation } from "@/tanstack/mutations/useRequestMutation";
-import { useState } from "react";
-
-const Chat = () => {
-  const [inputValue, setInputValue] = useState("");
-  const { mutate: sendRequest, data } = useRequestMutation();
-
-  const onClickHandler = () => {
-    sendRequest(inputValue);
-    setInputValue('')
-  };
-
+const Chat = ({ inputValue, setInputValue, onClickHandler }: ChatProps) => {
   return (
-    <div>
+    <BoxContainer className="w-full max-w-3xl items-end gap-8 bg-white">
       <input
+        className="w-full focus:outline-none"
+        placeholder="원하는 목표를 적어보세요. 구체적일수록 좋아요!"
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
       />
-      <button onClick={() => onClickHandler()}>confirm</button>
-      {data && <div>{data}</div>}
-    </div>
+      <Button bg="gradient" onClick={() => onClickHandler()}>
+        confirm
+      </Button>
+    </BoxContainer>
   );
 };
 
 export default Chat;
+
+type ChatProps = {
+  inputValue: string;
+  setInputValue: Dispatch<SetStateAction<string>>;
+  onClickHandler: () => void;
+};

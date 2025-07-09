@@ -3,6 +3,12 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  --color-primary-50: #b2dafb;
+  --color-primary-300: #64b3f4;
+
+  --color-secondary-50: #d3ebb8;
+  --color-secondary-300: #c2e59c;
 }
 
 @theme inline {
@@ -12,10 +18,10 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   :root {
     --background: #ededed;
-    --foreground: #0a0a0a;
+    --foreground: #171717;
   }
 }
 

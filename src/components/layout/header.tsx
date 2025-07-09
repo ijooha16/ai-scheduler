@@ -5,6 +5,8 @@ import { useAuthStore } from "@/stores/use-auth-store";
 import { useGetUserQuery } from "@/tanstack/queries/get-user";
 import { createClient } from "@/utils/supabase/client";
 import { useEffect } from "react";
+import Button from "../common/Button";
+import Link from "next/link";
 
 const Header = () => {
   useEffect(() => {
@@ -25,9 +27,15 @@ const Header = () => {
   const { data } = useGetUserQuery(userId);
 
   return (
-    <div>
-      {data ? data.nickname : "로그인해주세요"}님 안녕하세요
-      <div onClick={() => signOut()}>log out</div>
+    <div className="fixed top-0 z-90 flex h-16 w-full items-center justify-between bg-white/50 px-8 backdrop-blur-[15px]">
+      <div>Logo</div>
+      {data ? (
+        <Button onClick={() => signOut()}>로그아웃</Button>
+      ) : (
+        <Link href="/login">
+          <Button>로그인</Button>
+        </Link>
+      )}
     </div>
   );
 };
