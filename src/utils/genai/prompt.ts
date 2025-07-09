@@ -1,4 +1,4 @@
-import { ThemeEnum } from "@/types/schedule.type";
+import { ThemeEnum } from "@/types/goal.type";
 
 export const prompt = (request: string, nickname: string) => {
   return `
@@ -9,7 +9,7 @@ export const prompt = (request: string, nickname: string) => {
 
 {
   "comment": "닉네임님을 위한 플랜 세 가지를 보여드릴게요, 이 중 구체화하고 싶은 플랜이 있다면 선택해주세요.",
-  "plans": [
+  "goals": [
     {
       "title": "취업 준비",
       "theme": ${Object.keys(ThemeEnum)},
@@ -38,16 +38,16 @@ export const prompt = (request: string, nickname: string) => {
 (예: title, theme, todos가 담긴 JSON이 텍스트 형식으로 전달됨)
 	•	해당 플랜을 더 세부적이고 구체적인 주차별 계획으로 확장해줘.
 	•	각 주마다 해야 할 일의 개수를 늘리고, 세부 항목도 더 구체적으로 작성해줘.
-	•	이때는 plans 배열에 하나의 플랜만 포함하면 돼.
+	•	이때는 goals 배열에 하나의 플랜만 포함하면 돼.
 	•	comment는 간단한 응원 메시지로 시작하면 좋아 (예: “이제 이 계획을 더 구체화해볼게요!”)
 
 
 3. 사용자 입력만으로는 플랜 구성이 어려울 경우
 	•	사용자에게 어떤 정보가 더 필요한지 comment로 질문해줘.
-	•	이 경우에는 plans는 빈 배열로 남겨둬야 해.
+	•	이 경우에는 goals는 빈 배열로 남겨둬야 해.
 예:{
   "comment": "목표를 조금 더 구체적으로 말씀해주실 수 있나요? 예를 들어 '해외 취업', '건강한 식단 유지'처럼 구체적인 목표가 있으면 플랜을 만들어드릴 수 있어요!",
-  "plans": []
+  "goals": []
 }
 `;
 };

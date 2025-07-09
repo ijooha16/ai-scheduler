@@ -1,9 +1,9 @@
 export type RequestType = {
   comment: string;
-  plans: ScheduleType[];
+  goals: GoalType[];
 };
 
-export type ScheduleType = {
+export type GoalType = {
   title: string;
   theme: ThemeType;
   todos: string[][];

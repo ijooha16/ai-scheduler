@@ -7,15 +7,15 @@ import styled from "@emotion/styled";
 import { FormEvent, Fragment, useEffect, useState } from "react";
 import { useAuthStore } from "@/stores/use-auth-store";
 import { createClient } from "@/utils/supabase/client";
-import ScheduleCard from "@/components/home/schedule-card";
-import { ScheduleType } from "@/types/schedule.type";
+import ScheduleCard from "@/components/home/goal-card";
+import { RequestType, GoalType } from "@/types/goal.type";
 import { ChatType } from "@/types/chat.type";
 
 const Home = () => {
   const [chats, setChats] = useState<ChatType[]>([]);
   const [inputValue, setInputValue] = useState("");
   const { mutate: sendRequest, data, isPending } = useRequestMutation();
-  const schedule = data ? JSON.parse(data) : "";
+  const schedule = data ? JSON.parse(data) : null;
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -32,7 +32,11 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    data && setChats((prev) => [...prev, { type: "ai", content: schedule }]);
+    data &&
+      setChats((prev) => [
+        ...prev,
+        { id: chats.length, type: "ai", content: schedule },
+      ]);
   }, [data]);
 
   const { userId } = useAuthStore();
@@ -41,8 +45,15 @@ const Home = () => {
     e.preventDefault();
     if (!inputValue.trim()) return;
     sendRequest(inputValue);
-    setChats((prev) => [...prev, { type: "ai", content: inputValue }]);
+    setChats((prev) => [
+      ...prev,
+      { id: chats.length, type: "ai", content: inputValue },
+    ]);
     setInputValue("");
+  };
+
+  const onClickHandler = (e: GoalType) => {
+    sendRequest(JSON.stringify(e));
   };
 
   return (
@@ -53,22 +64,27 @@ const Home = () => {
           {chats &&
             chats.map((chat) =>
               typeof chat.content === "string" ? (
-                <div className="flex w-full justify-end">
+                <div key={chat.id} className="flex w-full justify-end">
                   <div className="bg-white">{chat.content}</div>
                 </div>
               ) : (
-                <>
+                <Fragment key={chat.id}>
                   <div>{chat.content.comment}</div>
-                  {chat.content.plans.length > 0 && (
+                  {chat.content.goals.length === 3 ? (
                     <div className="grid grid-cols-3 gap-x-4">
-                      {chat.content.plans.map((e: ScheduleType) => (
+                      {chat.content.goals.map((e: GoalType) => (
                         <Fragment key={e.title}>
-                          <ScheduleCard data={e} />
+                          <ScheduleCard
+                            onClickHandler={() => onClickHandler(e)}
+                            data={e}
+                          />
                         </Fragment>
                       ))}
                     </div>
-                  )}
-                </>
+                  ) : chat.content.goals.length === 1 ? (
+                    <ScheduleCard single={true} data={chat.content.goals[0]} />
+                  ) : null}
+                </Fragment>
               ),
             )}
           {isPending && <div className="w-full">Thinking</div>}

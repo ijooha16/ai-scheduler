@@ -1,9 +1,17 @@
-import { ScheduleType } from "@/types/schedule.type";
-import React from "react";
+import { GoalType } from "@/types/goal.type";
 import BoxContainer from "../layout/box-container";
 import Theme from "../common/theme";
+import Button from "../common/button";
 
-const ScheduleCard = ({ data }: { data: ScheduleType }) => {
+const ScheduleCard = ({
+  single = false,
+  data,
+  onClickHandler,
+}: {
+  single?: boolean;
+  data: GoalType;
+  onClickHandler?: () => void;
+}) => {
   return (
     <BoxContainer className="gap-4 bg-white">
       <div className="flex w-full items-center justify-between">
@@ -12,14 +20,23 @@ const ScheduleCard = ({ data }: { data: ScheduleType }) => {
       </div>
       {data.todos.map((todo, idx) => (
         <div key={todo[0]} className="flex gap-6 text-sm">
-          <div className="text-gray-400 font-bold">{idx + 1} 주차</div>
+          <div className="font-bold text-gray-400">{idx + 1} 주차</div>
           <div>
             {todo.map((t) => (
-              <div key={t} className="">{t}</div>
+              <div key={t} className="">
+                {t}
+              </div>
             ))}
           </div>
         </div>
       ))}
+      {single ? (
+        <Button>추가하기</Button>
+      ) : (
+        onClickHandler && (
+          <Button onClick={() => onClickHandler()}>선택하기</Button>
+        )
+      )}
     </BoxContainer>
   );
 };

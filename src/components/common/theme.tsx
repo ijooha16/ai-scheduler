@@ -1,4 +1,4 @@
-import { ThemeType, ThemeEnum } from "@/types/schedule.type";
+import { ThemeType, ThemeEnum } from "@/types/goal.type";
 import React from "react";
 
 const Theme = ({ theme }: { theme: ThemeType }) => {
