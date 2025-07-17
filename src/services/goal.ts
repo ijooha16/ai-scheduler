@@ -1,6 +1,24 @@
 import { GoalType } from "@/types/goal.type";
 import { createClient } from "@/utils/supabase/client";
 
+export const getGoal = async ( userId: string | null ) => {
+  const supabase = createClient();
+
+  if (!userId) return;
+
+  try {
+    const { data } = await supabase
+      .from("goals")
+      .select("*")
+      .eq("uid", userId)
+      .select('*');
+
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const addGoal = async ({
   goal,
   userId,
@@ -29,9 +47,9 @@ export const addGoal = async ({
       return;
     }
 
-    const rowsToInsert = todos.flatMap((weekTodos, weekIndex) =>
-      weekTodos.map((task) => ({
-        week: weekIndex + 1,
+    const rowsToInsert = todos.flatMap((stepTodos, stepIndex) =>
+      stepTodos.map((task) => ({
+        step: stepIndex + 1,
         content: task,
         completed: false,
         goal_id: data[0].id,

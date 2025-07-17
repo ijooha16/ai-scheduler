@@ -1,11 +1,11 @@
-import { useAuthStore } from "@/stores/use-auth-store";
+import useAuthStore from "@/stores/use-auth-store";
 import { useMutation } from "@tanstack/react-query";
-import { useGetUserQuery } from "../queries/get-user";
+import { useGetUserQuery } from "../queries/get-user-query";
 import { GoalType } from "@/types/goal.type";
 import { addGoal } from "@/services/goal";
 
 export const useAddGoalMutation = () => {
-  const { userId } = useAuthStore();
+  const userId = useAuthStore.getState().userId;
   const { data } = useGetUserQuery(userId);
 
   return useMutation({

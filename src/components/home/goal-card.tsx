@@ -23,7 +23,7 @@ const ScheduleCard = ({
       </div>
       {data.todos.map((todo, idx) => (
         <div key={todo[0]} className="flex gap-6 text-sm">
-          <div className="font-bold text-gray-400">{idx + 1} 주차</div>
+          <div className="font-bold text-gray-400">Step {idx + 1}</div>
           <div>
             {todo.map((t) => (
               <div key={t} className="">

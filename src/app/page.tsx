@@ -5,7 +5,7 @@ import PageContainer from "@/components/layout/page-container";
 import { useRequestGoalMutation } from "@/tanstack/mutations/request-goals-mutation";
 import styled from "@emotion/styled";
 import { FormEvent, Fragment, useEffect, useState } from "react";
-import { useAuthStore } from "@/stores/use-auth-store";
+import useAuthStore from "@/stores/use-auth-store";
 import { createClient } from "@/utils/supabase/client";
 import ScheduleCard from "@/components/home/goal-card";
 import { RequestType, GoalType } from "@/types/goal.type";
@@ -16,6 +16,7 @@ const Home = () => {
   const [inputValue, setInputValue] = useState("");
   const { mutate: sendRequest, data, isPending } = useRequestGoalMutation();
   const schedule = data ? JSON.parse(data) : null;
+  const { login, userId } = useAuthStore();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -24,7 +25,7 @@ const Home = () => {
         data: { user },
       } = await supabase.auth.getUser();
       if (user) {
-        useAuthStore.getState().login(user.id);
+        login(user.id);
       }
     };
 
@@ -39,16 +40,21 @@ const Home = () => {
       ]);
   }, [data]);
 
-  const { userId } = useAuthStore();
-
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!inputValue.trim()) return;
-    sendRequest(inputValue);
     setChats((prev) => [
       ...prev,
-      { id: chats.length, type: "ai", content: inputValue },
+      { id: chats.length, type: "user", content: inputValue },
     ]);
+    sendRequest(
+      chats
+        .filter((chat) => chat.type === "user")
+        .map((chat) => chat.content)
+        .join(" ") +
+        " " +
+        inputValue,
+    );
     setInputValue("");
   };
 
@@ -57,7 +63,7 @@ const Home = () => {
   };
 
   return (
-    <StyledPageContainer>
+    <>
       <CollapseExpandDiv show={!!data}>
         <>
           <div className="mt-auto" />
@@ -96,21 +102,11 @@ const Home = () => {
         setInputValue={setInputValue}
         onSubmitHandler={onSubmitHandler}
       />
-    </StyledPageContainer>
+    </>
   );
 };
 
 export default Home;
-
-const StyledPageContainer = styled(PageContainer)`
-  min-height: 0;
-  background-image: radial-gradient(
-    circle,
-    var(--color-secondary-50),
-    var(--color-primary-50),
-    #fff
-  );
-`;
 
 const CollapseExpandDiv = styled.div<{ show: boolean }>`
   overflow: auto;

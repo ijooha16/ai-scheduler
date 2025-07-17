@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "@/providers/RQProviders";
 import Header from "@/components/layout/header";
+import PageContainer from "@/components/layout/page-container";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,8 +33,8 @@ export default function RootLayout({
         <Providers>
           <div className="flex flex-col">
             <Header />
-            {children}
-            <div>footer</div>
+            <PageContainer>{children}</PageContainer>
+            <div className="bg-amber-100">footer</div>
           </div>
         </Providers>
       </body>
