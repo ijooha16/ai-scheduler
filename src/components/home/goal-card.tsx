@@ -3,6 +3,7 @@ import BoxContainer from "../layout/box-container";
 import Theme from "../common/theme";
 import Button from "../common/button";
 import { useAddGoalMutation } from "@/tanstack/mutations/add-goal-mutation";
+import Link from "next/link";
 
 const ScheduleCard = ({
   single = false,
@@ -34,7 +35,9 @@ const ScheduleCard = ({
         </div>
       ))}
       {single ? (
-        <Button onClick={() => addGoal(data)}>추가하기</Button>
+        <Link href="/dashboard">
+          <Button onClick={() => addGoal(data)}>추가하기</Button>
+        </Link>
       ) : (
         onClickHandler && (
           <Button onClick={() => onClickHandler()}>선택하기</Button>

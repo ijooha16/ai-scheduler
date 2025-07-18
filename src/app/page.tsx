@@ -64,7 +64,7 @@ const Home = () => {
 
   return (
     <>
-      <CollapseExpandDiv show={!!data}>
+      <CollapseExpandDiv>
         <>
           <div className="mt-auto" />
           {chats &&
@@ -108,7 +108,7 @@ const Home = () => {
 
 export default Home;
 
-const CollapseExpandDiv = styled.div<{ show: boolean }>`
+const CollapseExpandDiv = styled.div`
   overflow: auto;
   flex: 1;
   min-height: 0;

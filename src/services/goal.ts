@@ -1,7 +1,7 @@
 import { GoalType } from "@/types/goal.type";
 import { createClient } from "@/utils/supabase/client";
 
-export const getGoal = async ( userId: string | null ) => {
+export const getGoal = async (userId: string | null) => {
   const supabase = createClient();
 
   if (!userId) return;
@@ -11,7 +11,7 @@ export const getGoal = async ( userId: string | null ) => {
       .from("goals")
       .select("*")
       .eq("uid", userId)
-      .select('*');
+      .select("*");
 
     return data;
   } catch (error) {
@@ -48,11 +48,13 @@ export const addGoal = async ({
     }
 
     const rowsToInsert = todos.flatMap((stepTodos, stepIndex) =>
-      stepTodos.map((task) => ({
+      stepTodos.map((task, idx) => ({
+        uid: userId,
         step: stepIndex + 1,
         content: task,
         completed: false,
         goal_id: data[0].id,
+        order: idx,
       })),
     );
 
