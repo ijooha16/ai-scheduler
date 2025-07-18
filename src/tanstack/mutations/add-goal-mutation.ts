@@ -1,19 +1,17 @@
 import useAuthStore from "@/stores/use-auth-store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useGetUserQuery } from "../queries/get-user-query";
 import { GoalType } from "@/types/goal.type";
 import { addGoal } from "@/services/goal";
+import { QUERYKEY } from "@/constants/query-key.constant";
 
 export const useAddGoalMutation = () => {
   const queryClient = useQueryClient();
   const userId = useAuthStore.getState().userId;
-  const { data } = useGetUserQuery(userId);
 
   return useMutation({
-    mutationFn: (goal: GoalType) => addGoal({ goal, userId: data.uid }),
-    mutationKey: ["goal", userId],
+    mutationFn: addGoal,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["goal", userId] });
+      queryClient.invalidateQueries({ queryKey: [QUERYKEY.GOAL, userId] });
     },
   });
 };

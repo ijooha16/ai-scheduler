@@ -1,23 +1,12 @@
+import { QUERYKEY } from "@/constants/query-key.constant";
 import {
   editTodo,
   updateTodoComplete,
   updateTodoContent,
   updateTodoOrder,
 } from "@/services/todo";
-import { TodoType, UpdateCompletePayload } from "@/types/todo.type";
+import { TodoType } from "@/types/todo.type";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
-export const useEditTodoMutation = (goalIds: string[]) => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (data: TodoType) => editTodo(data),
-    mutationKey: ["todo", goalIds],
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["todo", goalIds] });
-    },
-  });
-};
 
 export const useUpdateTodoCompleteMutation = () => {
   const queryClient = useQueryClient();
@@ -26,7 +15,7 @@ export const useUpdateTodoCompleteMutation = () => {
     mutationFn: updateTodoComplete,
     onSuccess: (updatedTodo: TodoType) => {
       queryClient.setQueryData(
-        ["todo", updatedTodo.goal_id],
+        [QUERYKEY.TODO, updatedTodo.goal_id],
         (old: TodoType[]) => {
           if (!old) return [];
           return old.map((todo) =>
@@ -34,30 +23,6 @@ export const useUpdateTodoCompleteMutation = () => {
           );
         },
       );
-    },
-  });
-};
-
-export const useUpdateTodoContentMutation = (todoId: string[]) => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (data: TodoType) => updateTodoContent(data),
-    mutationKey: ["todo", todoId],
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["todo", todoId] });
-    },
-  });
-};
-
-export const useUpdateTodoOrderMutation = (todoId: string[]) => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (data: TodoType) => updateTodoOrder(data),
-    mutationKey: ["todo", todoId],
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["todo", todoId] });
     },
   });
 };

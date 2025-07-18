@@ -19,13 +19,7 @@ export const getGoal = async (userId: string | null) => {
   }
 };
 
-export const addGoal = async ({
-  goal,
-  userId,
-}: {
-  goal: GoalType;
-  userId: string;
-}) => {
+export const addGoal = async (goal: GoalType) => {
   const supabase = createClient();
   const { title, theme, todos } = goal;
 
@@ -34,7 +28,6 @@ export const addGoal = async ({
       .from("goals")
       .insert([
         {
-          uid: userId,
           title,
           theme,
           completed: false,
@@ -49,7 +42,7 @@ export const addGoal = async ({
 
     const rowsToInsert = todos.flatMap((stepTodos, stepIndex) =>
       stepTodos.map((task, idx) => ({
-        uid: userId,
+        uid: data[0].uid,
         step: stepIndex + 1,
         content: task,
         completed: false,

@@ -7,6 +7,7 @@ export type GoalType = {
   title: string;
   theme: ThemeType;
   todos: string[][];
+  id: number;
 };
 
 export enum ThemeEnum {
