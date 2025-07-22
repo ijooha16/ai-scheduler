@@ -13,7 +13,7 @@ export const TodoItem = React.memo(({ todo }: { todo: TodoType }) => {
 
   const { mutate: updateTodoComplete } = useUpdateTodoCompleteMutation();
   const { mutate: updateTodoContent } = useUpdateTodoContentMutation();
-  const { mutate: removeTodo } = useRemoveTodoMutation(goal_id!);
+  const { mutate: removeTodo } = useRemoveTodoMutation();
 
   const [inputValue, setInputValue] = useState(content);
   const [isEditing, setIsEditing] = useState(false);

@@ -44,7 +44,13 @@ export const removeTodo = async (todoId: number) => {
   if (!todoId) return;
 
   try {
-    await supabase.from("todos").delete().eq("id", todoId);
+    const { data } = await supabase
+      .from("todos")
+      .delete()
+      .eq("id", todoId)
+      .select();
+
+    return data?.[0];
   } catch (error) {
     console.log(error);
   }
