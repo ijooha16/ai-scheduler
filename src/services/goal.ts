@@ -19,6 +19,24 @@ export const getGoal = async (userId: string | null) => {
   }
 };
 
+export const getGoalById = async (goalId: number | null) => {
+  const supabase = createClient();
+
+  if (!goalId) return;
+
+  try {
+    const { data } = await supabase
+      .from("goals")
+      .select("*")
+      .eq("id", goalId)
+      .select();
+
+    return data && data[0];
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const addGoal = async (goal: GoalType) => {
   const supabase = createClient();
   const { title, theme, todos } = goal;
