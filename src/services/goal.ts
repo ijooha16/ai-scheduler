@@ -56,3 +56,15 @@ export const addGoal = async (goal: GoalType) => {
     console.log(error);
   }
 };
+
+export const removeGoal = async (goalId: number | null) => {
+  const supabase = createClient();
+
+  if (!goalId) return;
+
+  try {
+    await supabase.from("goals").delete().eq("id", goalId);
+  } catch (error) {
+    console.log(error);
+  }
+};

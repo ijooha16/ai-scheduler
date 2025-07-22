@@ -5,6 +5,7 @@ import { useGetGoalQuery } from "@/tanstack/queries/get-goal-query";
 import { useGetTodoQuery } from "@/tanstack/queries/get-todo-query";
 import { TodoType } from "@/types/todo.type";
 import { TodoItem } from "@/components/common/todo-item";
+import Link from "next/link";
 
 const MyStep = () => {
   const { userId } = useAuthStore();
@@ -37,9 +38,12 @@ const MyStepBox = ({ goalId, title }: { goalId: number; title: string }) => {
       <div className="flex w-full flex-col gap-2">
         {currentStep && (
           <>
-            <h2 className="mb-2 text-xl font-semibold">
+            <Link
+              href={`dashboard/${goalId}`}
+              className="mb-2 text-xl font-semibold"
+            >
               {title} Step {currentStep[0]}/ {data[currentStep[0]]?.length}
-            </h2>
+            </Link>
             {currentStep[1].map((todo, idx) => (
               <TodoItem key={todo.id} todo={todo} />
             ))}
