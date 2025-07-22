@@ -1,9 +1,6 @@
 import { QUERYKEY } from "@/constants/query-key.constant";
 import {
-  editTodo,
   updateTodoComplete,
-  updateTodoContent,
-  updateTodoOrder,
 } from "@/services/todo";
 import { TodoType } from "@/types/todo.type";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

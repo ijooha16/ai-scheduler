@@ -1,4 +1,4 @@
-import { GoalType } from "@/types/goal.type";
+import { EditGoalType, GoalType } from "@/types/goal.type";
 import { createClient } from "@/utils/supabase/client";
 
 export const getGoal = async (userId: string | null) => {
@@ -64,6 +64,19 @@ export const removeGoal = async (goalId: number | null) => {
 
   try {
     await supabase.from("goals").delete().eq("id", goalId);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const editGoal = async (data: EditGoalType) => {
+  const supabase = createClient();
+  const { title, theme, id } = data;
+
+  if (!data) return;
+
+  try {
+    await supabase.from("goals").update({ title, theme }).eq("id", id).select();
   } catch (error) {
     console.log(error);
   }

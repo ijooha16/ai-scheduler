@@ -20,4 +20,6 @@ export enum ThemeEnum {
   ETC = '기타',
 }
 
+export type EditGoalType = Omit<GoalType, "todos">;
+
 export type ThemeType = keyof typeof ThemeEnum
