@@ -1,20 +1,49 @@
 import styled from "@emotion/styled";
-import { Check } from "lucide-react";
-import { useUpdateTodoCompleteMutation } from "@/tanstack/mutations/edit-todo-mutation";
-import React from "react";
+import { Check, Edit3 } from "lucide-react";
+import {
+  useUpdateTodoCompleteMutation,
+  useUpdateTodoContentMutation,
+} from "@/tanstack/mutations/edit-todo-mutation";
+import React, { useState } from "react";
 import { TodoType } from "@/types/todo.type";
 
 export const TodoItem = React.memo(({ todo }: { todo: TodoType }) => {
+  const { id, content, completed } = todo;
+
   const { mutate: updateTodoComplete } = useUpdateTodoCompleteMutation();
+  const { mutate: updateTodoContent } = useUpdateTodoContentMutation();
+
+  const [inputValue, setInputValue] = useState(content);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const clickEditHandler = () => {
+    setIsEditing(false);
+    updateTodoContent({ id, content: inputValue });
+  };
 
   return (
-    <StyledTodo key={todo.id} checked={todo.completed}>
-      {todo.content}
+    <StyledTodo key={id} checked={completed}>
+      {isEditing ? (
+        <div>
+          <input
+            onChange={(e) => setInputValue(e.target.value)}
+            value={inputValue}
+          />
+          <div onClick={() => clickEditHandler()}>
+            <Check />
+          </div>
+        </div>
+      ) : (
+        <div>{content}</div>
+      )}
+      <div onClick={() => setIsEditing(true)}>
+        <Edit3 />
+      </div>
       <div
         onClick={() =>
           updateTodoComplete({
-            id: todo.id,
-            completed: !todo.completed,
+            id,
+            completed: !completed,
           })
         }
         className="cursor-pointer"
