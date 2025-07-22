@@ -1,4 +1,8 @@
-import { TodoType, UpdateCompletePayload, UpdateContentPayload } from "@/types/todo.type";
+import {
+  TodoType,
+  UpdateCompletePayload,
+  UpdateContentPayload,
+} from "@/types/todo.type";
 import { createClient } from "@/utils/supabase/client";
 
 //todo 가져오기
@@ -34,6 +38,17 @@ export const getTodo = async (goalId: number) => {
 //todo 추가
 
 //todo 삭제
+export const removeTodo = async (todoId: number) => {
+  const supabase = createClient();
+
+  if (!todoId) return;
+
+  try {
+    await supabase.from("todos").delete().eq("id", todoId);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 //todo 수정
 export const editTodo = async (data: TodoType) => {

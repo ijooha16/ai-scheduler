@@ -1,17 +1,19 @@
 import styled from "@emotion/styled";
-import { Check, Edit3 } from "lucide-react";
+import { Check, Edit3, Trash } from "lucide-react";
 import {
   useUpdateTodoCompleteMutation,
   useUpdateTodoContentMutation,
 } from "@/tanstack/mutations/edit-todo-mutation";
 import React, { useState } from "react";
 import { TodoType } from "@/types/todo.type";
+import { useRemoveTodoMutation } from "@/tanstack/mutations/remove-todo-mutation";
 
 export const TodoItem = React.memo(({ todo }: { todo: TodoType }) => {
-  const { id, content, completed } = todo;
+  const { id, content, completed, goal_id } = todo;
 
   const { mutate: updateTodoComplete } = useUpdateTodoCompleteMutation();
   const { mutate: updateTodoContent } = useUpdateTodoContentMutation();
+  const { mutate: removeTodo } = useRemoveTodoMutation(goal_id!);
 
   const [inputValue, setInputValue] = useState(content);
   const [isEditing, setIsEditing] = useState(false);
@@ -36,6 +38,7 @@ export const TodoItem = React.memo(({ todo }: { todo: TodoType }) => {
       ) : (
         <div>{content}</div>
       )}
+      <Trash onClick={() => removeTodo(id)} />
       <div onClick={() => setIsEditing(true)}>
         <Edit3 />
       </div>
