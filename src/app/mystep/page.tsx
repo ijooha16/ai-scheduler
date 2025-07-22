@@ -30,7 +30,7 @@ const MyStepBox = ({ goalId, title }: { goalId: number; title: string }) => {
   const currentStep: [step: string, todos: TodoType[]] =
     data &&
     (Object.entries(data) as [step: string, todos: TodoType[]][]).find(
-      ([_, todos]) => todos.every((todo) => !todo.completed),
+      ([_, todos]) => todos.some((todo) => !todo.completed),
     );
 
   return (
