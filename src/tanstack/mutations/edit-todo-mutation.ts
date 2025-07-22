@@ -16,10 +16,10 @@ export const useUpdateTodoCompleteMutation = () => {
     onSuccess: (updatedTodo: TodoType) => {
       queryClient.setQueryData(
         [QUERYKEY.TODO, updatedTodo.goal_id],
-        (old: TodoType[]) => {
+        (old: TodoType[][]) => {
           if (!old) return [];
-          return old.map((todo) =>
-            todo.id === updatedTodo.id ? updatedTodo : todo,
+          return Object.values(old).map((todo) =>
+            todo.map((t) => (t.id === updatedTodo.id ? updatedTodo : t)),
           );
         },
       );

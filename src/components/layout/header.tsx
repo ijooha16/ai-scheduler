@@ -21,9 +21,9 @@ const Header = () => {
       {data ? (
         <>
           <Link href="/dashboard">Dashboard</Link>
-          <Button onClick={() => onClickHandler()}>
-            {data.nickname}로그아웃
-          </Button>
+          <Link href="/mystep">mystep</Link>
+          <Link href="/mypage">mypage</Link>
+          <Button onClick={() => onClickHandler()}>로그아웃</Button>
         </>
       ) : (
         <Link href="/login">

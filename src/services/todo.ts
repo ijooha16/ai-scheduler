@@ -14,11 +14,64 @@ export const getTodo = async (goalId: number) => {
       .eq("goal_id", goalId)
       .order("goal_id", { ascending: true });
 
-    return data;
+    const groupedTodos = data?.reduce(
+      (acc, cur) => {
+        if (!acc[cur.step]) {
+          acc[cur.step] = [];
+        }
+        acc[cur.step].push(cur);
+        return acc;
+      },
+      {} as Record<string, (typeof data)[number][]>,
+    );
+
+    return groupedTodos;
   } catch (error) {
     console.log(error);
   }
 };
+
+// export const getCurrentStepTodos = async (goalId: number) => {
+//   const supabase = createClient();
+
+//   // 1. 모든 todos 불러오기
+//   const { data: todos, error } = await supabase
+//     .from("todos")
+//     .select("*")
+//     .eq("goal_id", goalId);
+
+//   if (error || !todos) {
+//     console.error("Fetch error:", error);
+//     return [];
+//   }
+
+//   // 2. step별로 그룹화
+//   const stepMap = todos.reduce((acc, todo) => {
+//     if (!acc[todo.step]) acc[todo.step] = [];
+//     acc[todo.step].push(todo);
+//     return acc;
+//   }, {} as Record<number, typeof todos>);
+
+//   // 3. step 오름차순으로 정렬
+//   const sortedSteps = Object.keys(stepMap)
+//     .map(Number)
+//     .sort((a, b) => a - b);
+
+//   // 4. 각 step별로 전체가 completed 되었는지 확인
+//   for (const step of sortedSteps) {
+//     const stepTodos = stepMap[step];
+//     const isAllCompleted = stepTodos.every((t) => t.completed);
+
+//     if (!isAllCompleted) {
+//       // 아직 완료 안 된 step 발견 → 그 step 리턴
+//       return stepTodos;
+//     }
+//   }
+
+//   // 모든 step이 완료된 경우 → 마지막 step 리턴
+//   const lastStep = sortedSteps[sortedSteps.length - 1];
+//   return stepMap[lastStep];
+// };
 
 //todo 추가
 
