@@ -3,7 +3,7 @@
 import Chat from "@/components/home/chat";
 import { useRequestGoalMutation } from "@/tanstack/mutations/request-goals-mutation";
 import styled from "@emotion/styled";
-import { FormEvent, Fragment, useEffect, useState } from "react";
+import { FormEvent, Fragment, useEffect, useRef, useState } from "react";
 import useAuthStore from "@/stores/use-auth-store";
 import { createClient } from "@/utils/supabase/client";
 import ScheduleCard from "@/components/home/goal-card";
@@ -16,6 +16,9 @@ const Home = () => {
   const { mutate: sendRequest, data, isPending } = useRequestGoalMutation();
   const schedule = data ? JSON.parse(data) : null;
   const { login, userId } = useAuthStore();
+
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+  const chatRef = useRef<ChatType | null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -30,6 +33,14 @@ const Home = () => {
 
     fetchUser();
   }, []);
+
+  useEffect(() => {
+    chatRef.current = chats[chats.length - 1];
+  }, [chats]);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chats]);
 
   useEffect(() => {
     data &&
@@ -98,6 +109,7 @@ const Home = () => {
               ),
             )}
           {isPending && <div className="w-full">Thinking</div>}
+          <div ref={bottomRef} />
         </>
       </CollapseExpandDiv>
       <Chat
