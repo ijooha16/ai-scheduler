@@ -34,7 +34,7 @@ export default function RootLayout({
           <div className="flex flex-col">
             <Header />
             <PageContainer>{children}</PageContainer>
-            <div className="bg-amber-100">footer</div>
+            {/* <div className="bg-amber-100">footer</div> */}
           </div>
         </Providers>
       </body>
