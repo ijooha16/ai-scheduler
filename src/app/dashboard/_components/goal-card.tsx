@@ -12,8 +12,6 @@ import Link from "next/link";
 
 const GoalCard = ({ data }: { data: GoalType }) => {
   const { data: todos } = useGetTodoQuery(data.id);
-  const { userId } = useAuthStore();
-  const { mutate: removeGoal } = useRemoveGoalMutation(userId);
   const { id, title, theme } = data;
 
   const completedStep =
@@ -24,14 +22,20 @@ const GoalCard = ({ data }: { data: GoalType }) => {
 
   return (
     <div>
-      <div onClick={() => removeGoal(id)}>
-        <Trash size={14} />
-      </div>
       <Link key={id} href={`/dashboard/${id}`}>
         <BoxContainer>
-          {title}
-          <Theme theme={theme} />
-          달성도 {completedStep} /{todos && Object.values(todos).length}
+          <div className="flex items-center justify-between gap-6">
+            <div className="font-semibold">{title}</div>
+            <Theme theme={theme} />
+          </div>
+          {completedStep === 0 ? (
+            <div>어서 시작해서 목표를 완료해보세요!</div>
+          ) : (
+            <div>
+              {todos && Object.values(todos).length}개의 스텝 중 {completedStep}
+              개의 스텝을 완료했어요!
+            </div>
+          )}
         </BoxContainer>
       </Link>
     </div>
