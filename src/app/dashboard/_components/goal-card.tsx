@@ -9,13 +9,12 @@ import { GoalType } from "@/types/goal.type";
 import { TodoType } from "@/types/todo.type";
 import { Trash } from "lucide-react";
 import Link from "next/link";
-import React, { useState } from "react";
 
-const GoalCard = ({ d }: { d: GoalType }) => {
-  const { data: todos } = useGetTodoQuery(d.id);
+const GoalCard = ({ data }: { data: GoalType }) => {
+  const { data: todos } = useGetTodoQuery(data.id);
   const { userId } = useAuthStore();
   const { mutate: removeGoal } = useRemoveGoalMutation(userId);
-  const { id, title, theme } = d;
+  const { id, title, theme } = data;
 
   const completedStep =
     todos &&

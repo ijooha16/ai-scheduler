@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { useGetTodoQuery } from "@/tanstack/queries/get-todo-query";
 import { TodoType } from "@/types/todo.type";
 import { useParams } from "next/navigation";
@@ -8,10 +8,7 @@ import { TodoItem } from "@/components/common/todo-item";
 import { Check, Edit3, Trash } from "lucide-react";
 import { useEditGoalMutation } from "@/tanstack/mutations/edit-goal-mutation";
 import useAuthStore from "@/stores/use-auth-store";
-import {
-  useGetGoalByIdQuery,
-  useGetGoalQuery,
-} from "@/tanstack/queries/get-goal-query";
+import { useGetGoalByIdQuery } from "@/tanstack/queries/get-goal-query";
 import { EditGoalType } from "@/types/goal.type";
 
 const GoalDetail = () => {

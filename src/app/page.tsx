@@ -1,14 +1,13 @@
 "use client";
 
 import Chat from "@/components/home/chat";
-import PageContainer from "@/components/layout/page-container";
 import { useRequestGoalMutation } from "@/tanstack/mutations/request-goals-mutation";
 import styled from "@emotion/styled";
 import { FormEvent, Fragment, useEffect, useState } from "react";
 import useAuthStore from "@/stores/use-auth-store";
 import { createClient } from "@/utils/supabase/client";
 import ScheduleCard from "@/components/home/goal-card";
-import { RequestType, GoalType } from "@/types/goal.type";
+import { GoalType } from "@/types/goal.type";
 import { ChatType } from "@/types/chat.type";
 
 const Home = () => {

@@ -2,7 +2,6 @@
 
 import useAuthStore from "@/stores/use-auth-store";
 import { useGetGoalQuery } from "@/tanstack/queries/get-goal-query";
-import React from "react";
 import GoalCard from "./_components/goal-card";
 
 const Dashboard = () => {
@@ -12,7 +11,7 @@ const Dashboard = () => {
   return (
     <>
       {data?.map((d) => (
-        <GoalCard d={d} key={d.id} />
+        <GoalCard data={d} key={d.id} />
       ))}
     </>
   );

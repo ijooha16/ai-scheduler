@@ -6,9 +6,16 @@ import { useGetTodoQuery } from "@/tanstack/queries/get-todo-query";
 import { TodoType } from "@/types/todo.type";
 import { TodoItem } from "@/components/common/todo-item";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const MyStep = () => {
+  const router = useRouter();
   const { userId } = useAuthStore();
+
+  if (!userId) {
+    router.push("/");
+  }
+
   const { data } = useGetGoalQuery(userId);
 
   return (
