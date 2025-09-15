@@ -23,7 +23,9 @@ const MyPage = () => {
         <>
           <div>{email}</div>
           <div>{nickname}</div>
-          <Image src={image} alt="profile image" width={40} height={40} />
+          {image && (
+            <Image src={image} alt="profile image" width={40} height={40} />
+          )}
         </>
       )}
     </div>
