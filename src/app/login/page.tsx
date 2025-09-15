@@ -1,18 +1,49 @@
 import PageContainer from "@/components/layout/page-container";
 import { login, signInWithKakao, signup } from "../../services/auth";
+import { ReactNode } from "react";
 
 export default function Login() {
   return (
     <PageContainer>
-      <form>
-        <label htmlFor="email">Email:</label>
-        <input id="email" name="email" type="email" required />
-        <label htmlFor="password">Password:</label>
-        <input id="password" name="password" type="password" required />
-        <button formAction={login}>Log in</button>
-        <button formAction={signup}>Sign up</button>
+      <form className="flex flex-col gap-4">
+        <AuthInput type="email" />
+        <AuthInput type="password" />
+        <AuthButton formAction={login}>Log in</AuthButton>
+        <AuthButton formAction={signup}>Sign up</AuthButton>
       </form>
-      <button onClick={signInWithKakao}>kakao</button>
+      <AuthButton onClick={signInWithKakao}>카카오 로그인</AuthButton>
     </PageContainer>
   );
 }
+
+const AuthInput = ({ type }: { type: string }) => {
+  return (
+    <div className="flex flex-col gap-1">
+      <label htmlFor={type} className="font-semibold">
+        {type}
+      </label>
+      <input
+        id={type}
+        name={type}
+        required
+        className="h-10 rounded-lg bg-gray-200"
+      />
+    </div>
+  );
+};
+
+const AuthButton = ({
+  onClick,
+  formAction,
+  children,
+}: {
+  onClick?: () => void;
+  formAction?: (formData: FormData) => void;
+  children: ReactNode;
+}) => {
+  return (
+    <button onClick={onClick} formAction={formAction}>
+      {children}
+    </button>
+  );
+};
