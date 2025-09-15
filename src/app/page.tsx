@@ -63,6 +63,11 @@ const Home = () => {
 
   return (
     <>
+      {chats.length === 0 && (
+        <div className="text-center text-6xl leading-normal font-bold whitespace-pre-line text-gray-700">
+          {"레츠골과 함께\n목표를 달성해보세요"}
+        </div>
+      )}
       <CollapseExpandDiv>
         <>
           <div className="mt-auto" />
