@@ -2,6 +2,7 @@ import {
   TodoType,
   UpdateCompletePayload,
   UpdateContentPayload,
+  UpdateOrderPayload,
 } from "@/types/todo.type";
 import { createClient } from "@/utils/supabase/client";
 
@@ -110,15 +111,42 @@ export const updateTodoComplete = async (data: UpdateCompletePayload) => {
   }
 };
 
-export const updateTodoOrder = async (data: TodoType) => {
+export type UpdateOrderItem = { id: string | number; step: number; order: number };
+export type UpdateOrderBatchPayload = { goalId: number; updates: UpdateOrderItem[] };
+
+export const updateTodosOrder = async (
+  payload: UpdateOrderBatchPayload
+): Promise<TodoType[]> => {
   const supabase = createClient();
-  const { order, id } = data;
+  const { goalId, updates } = payload;
+  if (!updates?.length) return [];
 
-  if (!data.id) return;
+  // (선택) 해당 goal_id에 속한 todo인지 미리 검증 – RLS 회피가 아니라,
+  // 잘못된 id 업데이트 시도를 줄이기 위함
+  const ids = updates.map(u => u.id);
+  const { data: found, error: selErr } = await supabase
+    .from("todos")
+    .select("id")
+    .eq("goal_id", goalId)
+    .in("id", ids);
 
-  try {
-    await supabase.from("todos").update({ order }).eq("id", id);
-  } catch (error) {
-    console.log(error);
+  if (selErr) throw selErr;
+  const allowed = new Set((found ?? []).map(r => r.id));
+  const validUpdates = updates.filter(u => allowed.has(u.id));
+  if (!validUpdates.length) return [];
+
+  // 간단 루프 UPDATE (개수가 적을 때 충분)
+  const updated: any[] = [];
+  for (const u of validUpdates) {
+    const { data, error } = await supabase
+      .from("todos")
+      .update({ step: u.step, order: u.order })
+      .eq("goal_id", goalId)         // 같은 목표 내에서만
+      .eq("id", u.id)
+      .select()
+      .single();
+    if (error) throw error;          // 실패 시 중단 (원하면 try/catch로 개별 무시)
+    if (data) updated.push(data);
   }
+  return updated as TodoType[];
 };

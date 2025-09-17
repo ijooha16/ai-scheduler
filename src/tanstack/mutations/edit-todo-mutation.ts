@@ -1,5 +1,12 @@
+"use client";
+
 import { QUERYKEY } from "@/constants/query-key.constant";
-import { updateTodoComplete, updateTodoContent } from "@/services/todo";
+import {
+  UpdateOrderBatchPayload,
+  updateTodoComplete,
+  updateTodoContent,
+  updateTodosOrder,
+} from "@/services/todo";
 import { TodoType } from "@/types/todo.type";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -9,15 +16,9 @@ export const useUpdateTodoCompleteMutation = () => {
   return useMutation({
     mutationFn: updateTodoComplete,
     onSuccess: (updatedTodo: TodoType) => {
-      queryClient.setQueryData(
-        [QUERYKEY.TODO, updatedTodo.goal_id],
-        (old: TodoType[][]) => {
-          if (!old) return [];
-          return Object.values(old).map((todo) =>
-            todo.map((t) => (t.id === updatedTodo.id ? updatedTodo : t)),
-          );
-        },
-      );
+      queryClient.invalidateQueries({
+        queryKey: [QUERYKEY.TODO, updatedTodo.goal_id],
+      });
     },
   });
 };
@@ -28,15 +29,22 @@ export const useUpdateTodoContentMutation = () => {
   return useMutation({
     mutationFn: updateTodoContent,
     onSuccess: (updatedTodo: TodoType) => {
-      queryClient.setQueryData(
-        [QUERYKEY.TODO, updatedTodo.goal_id],
-        (old: TodoType[][]) => {
-          if (!old) return [];
-          return Object.values(old).map((todo) =>
-            todo.map((t) => (t.id === updatedTodo.id ? updatedTodo : t)),
-          );
-        },
-      );
+      queryClient.invalidateQueries({
+        queryKey: [QUERYKEY.TODO, updatedTodo.goal_id],
+      });
+    },
+  });
+};
+
+export const useUpdateTodosOrderMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: UpdateOrderBatchPayload) => updateTodosOrder(payload),
+    onSettled: async (_data, _err, vars) => {
+      await queryClient.invalidateQueries({
+        queryKey: [QUERYKEY.TODO, vars.goalId],
+      });
     },
   });
 };

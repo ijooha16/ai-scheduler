@@ -15,4 +15,4 @@ type BaseUpdatePayload<K extends keyof Omit<TodoType, "id">> = {
 
 export type UpdateCompletePayload = BaseUpdatePayload<"completed">;
 export type UpdateContentPayload = BaseUpdatePayload<"content">;
-export type UpdateOrderPayload = BaseUpdatePayload<"order">;
+export type UpdateOrderPayload = BaseUpdatePayload<"order" | "step">;
